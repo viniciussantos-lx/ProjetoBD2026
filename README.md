@@ -1,210 +1,81 @@
-ProjetoBD2026
-📊 PROJETO DE GERENCIAMENTO DE BANCO DE DADOS
-Tema Escolhido
+# 📊 Monitoramento de Doenças Crônicas vs. Determinantes Sociais
+> **Projeto de Gerenciamento de Banco de Dados 2026**
 
-Monitoramento de Doenças Crônicas vs Determinantes Sociais
+![Status](https://img.shields.io/badge/Status-Em_Desenvolvimento-blue?style=for-the-badge)
+![ADS](https://img.shields.io/badge/Curso-ADS-orange?style=for-the-badge)
+![SQL](https://img.shields.io/badge/Focus-PostgreSQL_/_SQL-green?style=for-the-badge)
 
-📌 Fontes de Dados
+---
 
-Os dados utilizados no projeto serão obtidos de bases públicas do governo brasileiro, permitindo a integração entre informações de saúde e indicadores socioeconômicos.
+## 🎯 Resumo do Problema
+O Brasil apresenta desigualdade regional significativa no acesso ao saneamento básico. Doenças infectocontagiosas e crônicas agravadas por condições sanitárias precárias geram altos custos hospitalares para o SUS.
 
-🏥 Dados de Saúde
+> **Missão:** Integrar dados de saúde e indicadores socioeconômicos para identificar padrões que possam orientar políticas públicas e investimentos em infraestrutura sanitária.
 
-DataSUS – Sistema de Informações Hospitalares (SIH/SUS)
-🔗 https://datasus.saude.gov.br/transferencia-de-arquivos/
+---
 
-Tabela CID-10 – Classificação Internacional de Doenças
-🔗 http://www2.datasus.gov.br/cid10/V2008/descrcsv.htm
+## 📌 Arquitetura de Dados (Fontes)
 
-📊 Dados Socioeconômicos
+| Tipo de Dado | Fonte | Link de Acesso |
+| :--- | :--- | :--- |
+| **Hospitalares** | DataSUS (SIH/SUS) | [Acessar Base](https://datasus.saude.gov.br/transferencia-de-arquivos/) |
+| **Classificação** | Tabela CID-10 | [Ver Tabela](http://www2.datasus.gov.br/cid10/V2008/descrcsv.htm) |
+| **Socioeconômicos** | IBGE / SIDRA | [Ver Indicadores](https://sidra.ibge.gov.br/home/ipp/brasil) |
+| **Integrados** | Base dos Dados | [Explorar Dataset](https://basedosdados.org/dataset/08a1546e-251f-4546-9fe0-b1e6ab2b203d?table=17cf3744-4624-4859-a028-0f8d2d0a08c6) |
 
-IBGE – Indicadores socioeconômicos e de saneamento
-🔗 https://sidra.ibge.gov.br/home/ipp/brasil
+---
 
-Base de Dados Sociais Integradas (Base dos Dados)
-🔗 https://basedosdados.org/dataset/08a1546e-251f-4546-9fe0-b1e6ab2b203d?table=17cf3744-4624-4859-a028-0f8d2d0a08c6
+## 📦 Detalhamento dos Datasets
 
-🗺️ Padronização Geográfica
+<details>
+<summary><b>1️⃣ SIH/SUS – Internações Hospitalares (Clique para expandir)</b></summary>
 
-Para garantir a integração correta entre os datasets será utilizado o código oficial dos municípios do IBGE.
+* **Origem:** DataSUS
+* **Volume:** +200.000 registros (Filtro de 5 anos).
+* **Campos:** Código CID, Município/Estado, Data, Idade, Sexo, Valor Total, Procedimento, Desfecho (Alta/Óbito).
+</details>
 
-Código dos Municípios (IBGE)
-🔗 https://www.ibge.gov.br/explica/codigos-dos-municipios.php
+<details>
+<summary><b>2️⃣ Indicadores Socioeconômicos – IBGE (Clique para expandir)</b></summary>
 
-🎯 Problema de Negócio
+* **Origem:** IBGE / SIDRA
+* **Variáveis:** Acesso a esgoto/lixo, Renda per capita, IDM, População e Investimento em infraestrutura.
+</details>
 
-O Brasil apresenta desigualdade regional significativa no acesso ao saneamento básico. Ao mesmo tempo, doenças infectocontagiosas e crônicas agravadas por condições sanitárias precárias continuam gerando altos custos hospitalares para o SUS.
+<details>
+<summary><b>🗺️ Padronização Geográfica</b></summary>
 
-A integração entre dados de saúde e indicadores socioeconômicos permite identificar padrões importantes para orientar políticas públicas e investimentos em infraestrutura sanitária.
+A integração entre os datasets é realizada via **Código Oficial de Municípios do IBGE**, garantindo a integridade dos relacionamentos.
+</details>
 
-📦 Descrição dos Datasets
-1️⃣ SIH/SUS – Internações Hospitalares
+---
 
-Origem: DataSUS
+## 🔎 Análise Exploratória (Semana 1)
 
-Principais dados disponíveis
+```diff
++ Volume: Quantidade de registros e cobertura municipal.
++ CIDs Alvo: A00 a B99 (Infecciosas e Parasitárias).
++ Tendência: Evolução temporal de gastos e óbitos.
+📊 Perguntas Analíticas (Business Intelligence)
+Para responder a essas perguntas, o banco utilizará JOINs complexos, Subqueries e Common Table Expressions (CTEs).
 
-Código do CID
+Impacto Financeiro: Custo acumulado de doenças hídricas em locais com <50% de esgoto.
 
-Município de residência
+Eficiência: Correlação entre saneamento e tempo de internação pediátrica.
 
-Estado
+Ranking Regional: Top 10 municípios com maior gasto per capita em infectocontagiosas.
 
-Data da internação
+Taxa de Mortalidade: Proporção de óbitos em regiões sem cobertura sanitária.
 
-Idade do paciente
+Simulação: Projeção de economia caso o saneamento atingisse a média estadual.
 
-Sexo
+🚀 Roadmap de Execução
+[x] Definição do Escopo e Fontes
 
-Valor total da internação
+[ ] Fase 1: Modelagem do Banco (DER)
 
-Procedimento realizado
+[ ] Fase 2: Processo de ETL (Python/SQL)
 
-Estabelecimento de saúde
+[ ] Fase 3: Construção do Data Warehouse
 
-Tempo de permanência hospitalar
-
-Desfecho da internação (alta ou óbito)
-
-Volume estimado
-
-Milhões de registros por ano.
-Para o projeto serão filtrados aproximadamente 5 anos de dados, garantindo uma base com mais de 200.000 registros na tabela fato principal.
-
-2️⃣ Indicadores Socioeconômicos – IBGE
-
-Origem: IBGE / SIDRA
-
-Possíveis variáveis
-
-% de domicílios com acesso a esgoto
-
-% de domicílios com coleta de lixo
-
-Renda média per capita
-
-Índice de desenvolvimento municipal
-
-População por município
-
-Densidade demográfica
-
-Investimento em infraestrutura
-
-Esses dados permitirão cruzar condições socioeconômicas com impactos na saúde pública.
-
-🔎 Análise Exploratória Inicial (Semana 1)
-✔ Volume de Dados
-
-Quantidade de registros de internações por ano
-
-Quantidade de municípios cobertos
-
-Total gasto por ano com internações
-
-✔ Principais CIDs Infectocontagiosos
-
-Filtro do grupo CID:
-
-A00 – B99 (Doenças infecciosas e parasitárias)
-
-Essas doenças frequentemente estão associadas a:
-
-Falta de saneamento básico
-
-Água contaminada
-
-Condições sanitárias inadequadas
-
-✔ Tendência Temporal
-
-Análise da evolução ao longo dos anos:
-
-Crescimento ou redução das internações
-
-Variação dos gastos hospitalares
-
-Mudanças regionais nos padrões de doença
-
-📊 Perguntas Analíticas (Consultas SQL Complexas)
-
-O projeto buscará responder perguntas analíticas que exigem JOINs entre bases de dados, agregações e subqueries.
-
-1️⃣ Impacto Financeiro
-
-Qual o custo total acumulado de internações por doenças de veiculação hídrica em municípios onde menos de 50% da população possui esgoto tratado?
-
-Consulta envolvendo:
-
-JOIN entre SIH/SUS e dados de saneamento do IBGE
-
-Filtro de CIDs relacionados a doenças hídricas
-
-SUM de gastos hospitalares
-
-2️⃣ Eficiência Hospitalar
-
-Existe correlação entre a falta de saneamento básico e o tempo médio de permanência em leitos do SUS para pacientes pediátricos (0–12 anos)?
-
-Consulta envolvendo:
-
-JOIN entre indicadores sociais e dados hospitalares
-
-AVG de dias de internação
-
-Filtro por faixa etária
-
-3️⃣ Análise Regional
-
-Quais são os 10 municípios que apresentam o maior gasto público por habitante em doenças infectocontagiosas em relação ao seu índice de investimento em infraestrutura?
-
-Consulta envolvendo:
-
-JOIN entre dados populacionais e hospitalares
-
-Cálculo de gasto per capita
-
-Ordenação e ranking
-
-4️⃣ Perfil de Gravidade
-
-Qual a proporção de óbitos hospitalares em internações por doenças crônicas agravadas por condições sanitárias precárias em comparação a regiões com maior cobertura de saneamento?
-
-Consulta envolvendo:
-
-Agrupamento por região ou município
-
-Cálculo de taxa de mortalidade hospitalar
-
-Comparação entre diferentes níveis de saneamento
-
-5️⃣ Projeção de Economia
-
-Se os municípios com baixo saneamento atingissem a média estadual de cobertura, qual seria a redução estimada nos gastos hospitalares do SIH/SUS?
-
-Consulta envolvendo:
-
-Subqueries
-
-Simulação de cenário
-
-Comparação entre gasto atual e gasto projetado
-
-🎯 Objetivo da Primeira Entrega
-
-Definição clara do problema de negócio
-
-Identificação das fontes de dados
-
-Descrição inicial dos datasets
-
-Definição das perguntas analíticas
-
-Direcionamento para as próximas fases do projeto:
-
-Próximas etapas
-
-1️⃣ Modelagem do Banco de Dados
-2️⃣ Processo de ETL
-3️⃣ Construção do Data Warehouse
-4️⃣ Consultas Analíticas e Dashboards
+[ ] Fase 4: Dashboards e Consultas Finais
