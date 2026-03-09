@@ -20,7 +20,8 @@ O Brasil apresenta desigualdade regional significativa no acesso ao saneamento b
 | :--- | :--- | :--- |
 | **Hospitalares** | DataSUS (SIH/SUS) | [Acessar Base](https://datasus.saude.gov.br/transferencia-de-arquivos/) |
 | **Classificação** | Tabela CID-10 | [Ver Tabela](http://www2.datasus.gov.br/cid10/V2008/descrcsv.htm) |
-| **Socioeconômicos** | IBGE / SIDRA | [Ver Indicadores](https://sidra.ibge.gov.br/home/ipp/brasil) |
+| **Socioeconômico** | IBGE  | [Ver Indicadores](https://www.ibge.gov.br/explica/codigos-dos-municipios.php) |
+| **Socioeconômico²** | SIDRA | [Ver Indicadores](https://sidra.ibge.gov.br/home/ipp/brasil) |
 | **Integrados** | Base dos Dados | [Explorar Dataset](https://basedosdados.org/dataset/08a1546e-251f-4546-9fe0-b1e6ab2b203d?table=17cf3744-4624-4859-a028-0f8d2d0a08c6) |
 
 ---
@@ -56,18 +57,24 @@ A integração entre os datasets é realizada via **Código Oficial de Municípi
 + Volume: Quantidade de registros e cobertura municipal.
 + CIDs Alvo: A00 a B99 (Infecciosas e Parasitárias).
 + Tendência: Evolução temporal de gastos e óbitos.
+
 📊 Perguntas Analíticas (Business Intelligence)
 Para responder a essas perguntas, o banco utilizará JOINs complexos, Subqueries e Common Table Expressions (CTEs).
 
-Impacto Financeiro: Custo acumulado de doenças hídricas em locais com <50% de esgoto.
+Impacto Financeiro: Qual o custo total acumulado de internações por doenças de veiculação hídrica
+em municípios onde menos de 50% da população possui esgoto tratado?
 
-Eficiência: Correlação entre saneamento e tempo de internação pediátrica.
+Eficiência Hospitalar: Existe correlação entre a falta de saneamento básico
+e o tempo médio de permanência (dias) em leitos do SUS para pacientes pediátricos (0-12 anos)?
 
-Ranking Regional: Top 10 municípios com maior gasto per capita em infectocontagiosas.
+Análise Regional: Quais são os 10 municípios que apresentam o maior gasto público
+por habitante em doenças infectocontagiosas em relação ao seu índice de investimento em infraestrutura?
 
-Taxa de Mortalidade: Proporção de óbitos em regiões sem cobertura sanitária.
+Taxa de Mortalidade: Qual a proporção de óbitos hospitalares em internações
+por doenças crônicas agravadas por condições sanitárias precárias em comparação a regiões saneadas?.
 
-Simulação: Projeção de economia caso o saneamento atingisse a média estadual.
+Simulação: Se os municípios com baixo saneamento atingissem a média estadual de cobertura,
+qual seria a redução estimada (em R$) nos gastos hospitalares do SIH/SUS?.
 
 🚀 Roadmap de Execução
 [x] Definição do Escopo e Fontes
