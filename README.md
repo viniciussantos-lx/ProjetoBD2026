@@ -79,7 +79,7 @@ qual seria a redução estimada (em R$) nos gastos hospitalares do SIH/SUS?.
 🚀 Roadmap de Execução
 [x] Definição do Escopo e Fontes
 
-[ ] Fase 1: Modelagem do Banco (DER)
+[x] Fase 1: Modelagem do Banco (DER)
 
 [ ] Fase 2: Processo de ETL (Python/SQL)
 
