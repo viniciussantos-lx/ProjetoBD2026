@@ -20,7 +20,7 @@ O Brasil apresenta desigualdade regional significativa no acesso ao saneamento b
 | :--- | :--- | :--- |
 | **Hospitalares** | DataSUS (SIH/SUS) | [Acessar Base](https://datasus.saude.gov.br/transferencia-de-arquivos/) |
 | **Classificação** | Tabela CID-10 | [Ver Tabela](http://www2.datasus.gov.br/cid10/V2008/descrcsv.htm) |
-| **Socioeconômico** | IBGE  | [Ver Indicadores](https://www.ibge.gov.br/explica/codigos-dos-municipios.php) |
+| **Socioeconômico** | IBGE  | [Ver Indicadores](https://www.ibge.gov.br/explica/codigos-dos-municipios.php) |
 | **Socioeconômico²** | SIDRA | [Ver Indicadores](https://sidra.ibge.gov.br/home/ipp/brasil) |
 | **Integrados** | Base dos Dados | [Explorar Dataset](https://basedosdados.org/dataset/08a1546e-251f-4546-9fe0-b1e6ab2b203d?table=17cf3744-4624-4859-a028-0f8d2d0a08c6) |
 
@@ -48,6 +48,138 @@ O Brasil apresenta desigualdade regional significativa no acesso ao saneamento b
 
 A integração entre os datasets é realizada via **Código Oficial de Municípios do IBGE**, garantindo a integridade dos relacionamentos.
 </details>
+
+---
+
+## 📐 Modelo de Dados (ERD)
+
+Abaixo está a representação visual da modelagem **Star Schema** com derivações **Snowflake**. O modelo utiliza chaves substitutas (Surrogate Keys) para otimização e flags de classificação para análise de saúde pública.
+
+```mermaid
+erDiagram
+    %% --- FATOS ---
+    Fato_Internacoes {
+        int id_internacao PK
+        int id_cid10_categoria FK
+        int id_municipio FK
+        int id_tempo_internacao FK
+        int id_tempo_alta FK
+        int id_paciente FK
+        int id_estabelecimento FK
+        int id_procedimento FK
+        int id_desfecho FK
+        int id_tipo_leito FK
+        decimal vl_total_internacao
+        int nu_dias_permanencia
+        boolean fl_obito
+    }
+
+    Fato_Indicadores_Sociais {
+        int id_indicador PK
+        int id_municipio FK
+        int id_tempo FK
+        int id_nivel_saneamento FK
+        float nu_perc_esgoto_tratado
+        float nu_perc_agua_tratada
+        decimal vl_renda_media_per_capita
+        int nu_populacao
+    }
+
+    %% --- DIMENSÕES GEOGRÁFICAS ---
+    Dim_Municipio {
+        int id_municipio PK
+        int id_estado FK
+        int id_regiao_saude FK
+        string ds_municipio
+        int nu_populacao
+    }
+
+    Dim_Estado {
+        int id_estado PK
+        int id_regiao FK
+        string sg_uf
+        string ds_estado
+    }
+
+    Dim_Regiao_Saude {
+        int id_regiao_saude PK
+        int id_estado FK
+        string ds_regiao_saude
+    }
+
+    Dim_Regiao_Geografica {
+        int id_regiao PK
+        string sg_regiao
+    }
+
+    %% --- DIMENSÕES SAÚDE / CID10 ---
+    Dim_CID10_Categoria {
+        int id_categoria PK
+        int id_grupo FK
+        string ds_categoria
+    }
+
+    Dim_CID10_Grupo {
+        int id_grupo PK
+        int id_capitulo FK
+        string ds_grupo
+        boolean fl_veiculacao_hidrica
+        boolean fl_doenca_cronica
+    }
+
+    Dim_CID10_Capitulo {
+        int id_capitulo PK
+        string ds_capitulo
+        boolean fl_infectocontagioso
+    }
+
+    %% --- OUTRAS DIMENSÕES ---
+    Dim_Tempo {
+        int id_tempo PK
+        date dt_referencia
+        int nu_ano
+        int nu_mes
+    }
+
+    Dim_Paciente {
+        int id_paciente PK
+        int id_faixa_etaria FK
+        string ds_sexo
+        string ds_raca_cor
+    }
+
+    Dim_Investimento_Infraestrutura {
+        int id_investimento PK
+        int id_municipio FK
+        int id_tempo FK
+        decimal vl_investimento
+    }
+
+    Dim_Nivel_Saneamento {
+        int id_nivel_saneamento PK
+        string ds_level
+        string co_cor_hex
+    }
+
+    %% --- RELACIONAMENTOS ---
+    Fato_Internacoes }|--|| Dim_Tempo : "internacao/alta"
+    Fato_Internacoes }|--|| Dim_Municipio : "localidade"
+    Fato_Internacoes }|--|| Dim_CID10_Categoria : "diagnostico"
+    Fato_Internacoes }|--|| Dim_Paciente : "paciente"
+    
+    Fato_Indicadores_Sociais }|--|| Dim_Tempo : "periodo"
+    Fato_Indicadores_Sociais }|--|| Dim_Municipio : "localidade"
+    Fato_Indicadores_Sociais }|--|| Dim_Nivel_Saneamento : "classificacao"
+
+    Dim_Investimento_Infraestrutura }|--|| Dim_Tempo : "periodo"
+    Dim_Investimento_Infraestrutura }|--|| Dim_Municipio : "localidade"
+
+    Dim_Municipio }|--|| Dim_Estado : "pertence"
+    Dim_Municipio }|--|| Dim_Regiao_Saude : "vinculo"
+    Dim_Estado }|--|| Dim_Regiao_Geografica : "regiao"
+    
+    Dim_CID10_Categoria }|--|| Dim_CID10_Grupo : "grupo"
+    Dim_CID10_Grupo }|--|| Dim_CID10_Capitulo : "capitulo"
 
 ---
 
